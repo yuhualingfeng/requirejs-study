@@ -1,2 +1,38 @@
 requirejs 2015.08.12
 
+1 加载Javascript文件
+	requirejs以一个相对baseUrl的地址来加载所有的代码.页面顶层<script>标签含一个特殊的属性data-main,requirejs使用它来启动脚本加载过程,而baseUrl一般设置与该属性相一致的目录
+	baseUrl可以通过requirejs.config配置,其默认值为包含requirejs的那个html页面所属目录.
+	requirejs的解析过程为"baseUrl+paths",假如你想避开此解析过程只需满足一下条件之一：(1)以".js"结束(2)以"/"开始(3)包含url协议,如"http" or "https:"
+	建议使用'baseUrl+paths'来解析.
+	建议目录结构：
+		www/
+			index.html
+			js/
+				app/
+					sub.js
+				lib/
+					jquery.js
+					canvas.js
+				app.js
+	index.html
+		<script data-main="js/app.js" src="js/require.js"></script>
+	app.js
+		require.config({
+			baseUrl:'js/lib',
+			path:{
+				app:'../app'
+			}
+		});
+		requirejs(['jquery','canvas','app/sub'],function($,canvas,sub){
+			//jquery,canvas and the app/sub module are all loaded and can be used here now.
+		});
+	
+	requirejs会异步无序的加载这些库,你必须使用shim config来指明模块的依赖关系，否则有可能会报错.
+	
+
+	
+		
+	
+
+	
