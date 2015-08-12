@@ -1,4 +1,6 @@
 requirejs 2015.08.12
+english document:http://requirejs.org/docs/api.html
+chinese document:http://www.require.cn
 
 1 加载Javascript文件
 	requirejs以一个相对baseUrl的地址来加载所有的代码.页面顶层<script>标签含一个特殊的属性data-main,requirejs使用它来启动脚本加载过程,而baseUrl一般设置与该属性相一致的目录
