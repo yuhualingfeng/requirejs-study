@@ -1,6 +1,6 @@
 requirejs 2015.08.12
 english document:http://requirejs.org/docs/api.html
-chinese document:http://www.require.cn
+chinese document:http://www.requirejs.cn
 
 1 加载Javascript文件
 	requirejs以一个相对baseUrl的地址来加载所有的代码.页面顶层<script>标签含一个特殊的属性data-main,requirejs使用它来启动脚本加载过程,而baseUrl一般设置与该属性相一致的目录
@@ -32,8 +32,70 @@ chinese document:http://www.require.cn
 	
 	requirejs会异步无序的加载这些库,你必须使用shim config来指明模块的依赖关系，否则有可能会报错.
 	
-
+2require.config支持的配置项
+	baseUrl(type:String):所有模块的查找根路径.当加载纯js文件(依赖字符串以/开头,或者以.js结尾,或者含协议)不会使用baseUrl.
+					如果未设置baseUrl,则默认值为加载require.js的html所处的位置.
+					如果用了data-main属性,则该路径就变成了baseUrl.
+	paths(type:Object):path映射那些不直接放置于baseUrl下的模块名.设置path的起始位置是相对于baseUrl的,除非该path设置包含/或协议.
+					  用于模块名的path不因含有.js后缀.
+	shim(type:Object):为那些没有使用define()来声明依赖关系、设置模块的"浏览器全局变量注入"型脚本做依赖和导出设置。
+	map(type:Object): 对于给定的模块前缀,使用一个不同的模块ID来加载该模块.
+					  该特性仅适用于那些调用了define()并将其注册为匿名模块的真正AMD模块脚本.map配置中仅使用绝对模块ID.
+	config:
+	packages:
+	nodeIdCompat:
+	waitSeconds:
+	context:
+	deps:
+	callback:
+	ecforceDefine:
+	xhtml:
+	urlArgs:
+	scriptType:
+	skipDataMain:
 	
+	
+	
+
+3定义模块
+		简单的键值对
+			define({color:"black",size:"unisize"});
+			
+		函数式定义
+			define(function(){
+				return {color:'black',size:'unisize'};
+			});
+		存在依赖的函数式定义
+			define(["./cart","inventory"],function(cart,inventory){
+				return {
+					color:"blue",
+					size:"large",
+					addToCart:function(){
+						inventory.decrement(this);
+						cart.add(this);
+					}
+				};
+			});
+		将模块定义为一个函数
+			define(["my/cart","my/inventory"],function(cart,inventory){
+				return function(title){
+					return title ? (window.title=titie):
+							inventory.storeName+ ' '+cart.name;
+				};
+			});
+		简单包装CommonJS来定义模块
+			define(function(require,exports,module){
+				var a = require('a');
+				var b = require('b');
+				return function(){};
+			
+			});
+		定义一个命名模块
+			define("foo/title",['my/cart','my/inventory'],function(cart,inventory){
+				//define foo/title object in here
+			});
+		
+		
 		
 	
 
